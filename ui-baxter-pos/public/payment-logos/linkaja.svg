@@ -1,0 +1,5 @@
+<svg viewBox="0 0 140 50" xmlns="http://www.w3.org/2000/svg">
+  <rect width="140" height="50" rx="8" fill="#E82529"/>
+  <polygon points="22,8 14,26 21,26 16,42 30,22 22,22" fill="white"/>
+  <text x="85" y="33" font-family="Arial Black,Arial,sans-serif" font-size="18" font-weight="900" fill="white" text-anchor="middle">LinkAja</text>
+</svg>

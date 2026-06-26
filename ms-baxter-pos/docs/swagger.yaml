@@ -1,0 +1,1275 @@
+basePath: /api
+definitions:
+  main.ActivityLog:
+    properties:
+      action:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      ip_address:
+        type: string
+      user:
+        $ref: '#/definitions/main.User'
+      user_id:
+        type: integer
+    type: object
+  main.CashFlow:
+    properties:
+      amount:
+        type: number
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      creator:
+        $ref: '#/definitions/main.User'
+      description:
+        type: string
+      evidence:
+        description: URL to receipt image for cash out
+        type: string
+      id:
+        type: integer
+      type:
+        description: in, out
+        type: string
+      updated_at:
+        type: string
+    type: object
+  main.Ledger:
+    properties:
+      amount:
+        type: number
+      category:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      creator:
+        $ref: '#/definitions/main.User'
+      date:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      reference:
+        type: string
+      type:
+        description: income, expense
+        type: string
+      updated_at:
+        type: string
+    type: object
+  main.Membership:
+    properties:
+      created_at:
+        type: string
+      end_date:
+        type: string
+      id:
+        type: integer
+      reminder_sent:
+        type: boolean
+      start_date:
+        type: string
+      status:
+        description: pending, active, expired
+        type: string
+      transaction:
+        $ref: '#/definitions/main.Transaction'
+      transaction_id:
+        type: integer
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/main.User'
+      user_id:
+        type: integer
+      vehicle:
+        $ref: '#/definitions/main.Vehicle'
+      vehicle_id:
+        type: integer
+    type: object
+  main.PaymentMethod:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      name:
+        type: string
+      type:
+        description: cash, xendit
+        type: string
+      updated_at:
+        type: string
+    type: object
+  main.PointConfig:
+    properties:
+      id:
+        type: integer
+      membership_points_rp:
+        type: number
+      min_transaction_rp:
+        type: number
+      points_per_rupiah:
+        type: number
+      updated_at:
+        type: string
+    type: object
+  main.Service:
+    properties:
+      category:
+        description: carwash, bikewash
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      duration:
+        description: in minutes
+        type: integer
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      name:
+        type: string
+      price:
+        type: number
+      updated_at:
+        type: string
+    type: object
+  main.Transaction:
+    properties:
+      cashier:
+        $ref: '#/definitions/main.User'
+      cashier_id:
+        description: Admin who processed
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/main.TransactionItem'
+        type: array
+      notes:
+        type: string
+      paid_at:
+        type: string
+      payment_method:
+        $ref: '#/definitions/main.PaymentMethod'
+      payment_method_id:
+        type: integer
+      payment_type:
+        description: cash, xendit
+        type: string
+      points_earned:
+        type: integer
+      status:
+        description: pending, paid, cancelled, failed
+        type: string
+      total_amount:
+        type: number
+      transaction_code:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/main.User'
+      user_id:
+        type: integer
+      xendit_invoice_id:
+        type: string
+      xendit_payment_url:
+        type: string
+    type: object
+  main.TransactionItem:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      price:
+        type: number
+      quantity:
+        type: integer
+      service:
+        $ref: '#/definitions/main.Service'
+      service_id:
+        type: integer
+      subtotal:
+        type: number
+      transaction_id:
+        type: integer
+    type: object
+  main.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      google_id:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      memberships:
+        items:
+          $ref: '#/definitions/main.Membership'
+        type: array
+      name:
+        type: string
+      phone:
+        type: string
+      photo:
+        type: string
+      points:
+        type: integer
+      role:
+        description: customer, admin
+        type: string
+      transactions:
+        items:
+          $ref: '#/definitions/main.Transaction'
+        type: array
+      updated_at:
+        type: string
+      vehicles:
+        items:
+          $ref: '#/definitions/main.Vehicle'
+        type: array
+    type: object
+  main.Vehicle:
+    properties:
+      brand:
+        type: string
+      color:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      license_plate:
+        type: string
+      memberships:
+        items:
+          $ref: '#/definitions/main.Membership'
+        type: array
+      model:
+        type: string
+      type:
+        description: car, bike
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/main.User'
+      user_id:
+        type: integer
+      year:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@carwash.com
+    name: API Support
+    url: http://www.carwash.com/support
+  description: Complete carwash management system API with membership, transactions,
+    and analytics
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Carwash Management API
+  version: "1.0"
+paths:
+  /admin/activity:
+    get:
+      consumes:
+      - application/json
+      description: Get latest admin activity logs with filters
+      parameters:
+      - description: Filter by user ID
+        in: query
+        name: user_id
+        type: integer
+      - description: Filter by action
+        in: query
+        name: action
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.ActivityLog'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Get Activity Logs
+      tags:
+      - Admin - Activity Logs
+  /admin/analytics:
+    get:
+      consumes:
+      - application/json
+      description: Get revenue by category, top customers, and active memberships
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              active_memberships:
+                type: integer
+              category_revenue:
+                type: object
+              top_customers:
+                type: object
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get Business Analytics
+      tags:
+      - Admin - Analytics
+  /admin/cashflow:
+    get:
+      consumes:
+      - application/json
+      description: List cash-in and cash-out records
+      parameters:
+      - description: Start date
+        in: query
+        name: start_date
+        type: string
+      - description: End date
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.CashFlow'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Get Cash Flow
+      tags:
+      - Admin - Cash Flow
+  /admin/cashflow/in:
+    post:
+      consumes:
+      - application/json
+      description: Add income cash flow
+      parameters:
+      - description: Cash In Data
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            amount:
+              format: float64
+              type: number
+            description:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.CashFlow'
+        "400":
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Cash In
+      tags:
+      - Admin - Cash Flow
+  /admin/cashflow/out:
+    post:
+      consumes:
+      - application/json
+      description: Add expense cash flow with evidence
+      parameters:
+      - description: Cash Out Data
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            amount:
+              format: float64
+              type: number
+            description:
+              type: string
+            evidence:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.CashFlow'
+        "400":
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Cash Out
+      tags:
+      - Admin - Cash Flow
+  /admin/config/points:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve current point reward configuration
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.PointConfig'
+      security:
+      - BearerAuth: []
+      summary: Get Point Configuration
+      tags:
+      - Admin - Config
+    put:
+      consumes:
+      - application/json
+      description: Update point reward settings
+      parameters:
+      - description: Point Config
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.PointConfig'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.PointConfig'
+        "400":
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update Point Configuration
+      tags:
+      - Admin - Config
+  /admin/ledger:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve ledger entries with optional filters
+      parameters:
+      - description: Start date
+        in: query
+        name: start_date
+        type: string
+      - description: End date
+        in: query
+        name: end_date
+        type: string
+      - description: Type (income/expense)
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Ledger'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Get Ledger Entries
+      tags:
+      - Admin - Ledger
+    post:
+      consumes:
+      - application/json
+      description: Create income or expense ledger entry
+      parameters:
+      - description: Ledger Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.Ledger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Ledger'
+        "400":
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create Ledger Entry
+      tags:
+      - Admin - Ledger
+  /admin/login:
+    post:
+      consumes:
+      - application/json
+      description: Login for admin users with email and password
+      parameters:
+      - description: Admin Credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            email:
+              type: string
+            password:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              token:
+                type: string
+              user:
+                $ref: '#/definitions/main.User'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      summary: Admin Login
+      tags:
+      - Authentication
+  /admin/memberships:
+    get:
+      consumes:
+      - application/json
+      description: Get all memberships with optional status filter
+      parameters:
+      - description: Membership status
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Membership'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get Membership List
+      tags:
+      - Admin - Memberships
+  /admin/reports/monthly:
+    get:
+      consumes:
+      - application/json
+      description: Get detailed monthly report with statistics
+      parameters:
+      - description: 'Year (default: current year)'
+        in: query
+        name: year
+        type: integer
+      - description: 'Month (default: current month)'
+        in: query
+        name: month
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              cash_in:
+                format: float64
+                type: number
+              cash_out:
+                format: float64
+                type: number
+              net_income:
+                format: float64
+                type: number
+              service_stats:
+                type: object
+              total_revenue:
+                format: float64
+                type: number
+              total_transactions:
+                type: integer
+              transactions:
+                items:
+                  $ref: '#/definitions/main.Transaction'
+                type: array
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get Monthly Report
+      tags:
+      - Admin - Reports
+  /admin/reports/revenue-chart:
+    get:
+      consumes:
+      - application/json
+      description: Get monthly revenue for a given year
+      parameters:
+      - description: Year
+        in: query
+        name: year
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              properties:
+                month:
+                  type: integer
+                revenue:
+                  format: float64
+                  type: number
+              type: object
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Revenue Chart
+      tags:
+      - Admin - Reports
+  /admin/services:
+    post:
+      consumes:
+      - application/json
+      description: Create new service (admin only)
+      parameters:
+      - description: Service Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.Service'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Service'
+        "400":
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create Service
+      tags:
+      - Admin - Services
+  /admin/services/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update service data by ID
+      parameters:
+      - description: Service ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.Service'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Service'
+        "400":
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update Service
+      tags:
+      - Admin - Services
+  /admin/transactions:
+    get:
+      consumes:
+      - application/json
+      description: Get list of transactions with filters
+      parameters:
+      - description: Transaction status
+        enum:
+        - pending
+        - paid
+        - cancelled
+        - failed
+        in: query
+        name: status
+        type: string
+      - description: Start date filter (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date filter (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Filter by user ID
+        in: query
+        name: user_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Transaction'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get All Transactions
+      tags:
+      - Admin - Transactions
+  /admin/transactions/export:
+    get:
+      description: Export paid transactions to XLSX file
+      parameters:
+      - description: Start date
+        in: query
+        name: start_date
+        type: string
+      - description: End date
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: Excel File
+      security:
+      - BearerAuth: []
+      summary: Export Transactions to Excel
+      tags:
+      - Admin - Transactions
+  /admin/transactions/manual:
+    post:
+      consumes:
+      - application/json
+      description: Create transaction manually from cashier/POS system
+      parameters:
+      - description: Manual Checkout Data
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            customer_name:
+              type: string
+            items:
+              items:
+                properties:
+                  quantity:
+                    type: integer
+                  service_id:
+                    type: integer
+                type: object
+              type: array
+            notes:
+              type: string
+            payment_method_id:
+              type: integer
+            user_id:
+              type: integer
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Transaction'
+        "400":
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Manual Checkout (POS)
+      tags:
+      - Admin - Transactions
+  /admin/vehicles:
+    get:
+      consumes:
+      - application/json
+      description: Get all registered vehicles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Vehicle'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Get Vehicle List
+      tags:
+      - Admin - Vehicles
+  /auth/google:
+    post:
+      consumes:
+      - application/json
+      description: Login with Google OAuth and get JWT token
+      parameters:
+      - description: Google Auth Data
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            email:
+              type: string
+            google_id:
+              type: string
+            name:
+              type: string
+            photo:
+              type: string
+            token:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              token:
+                type: string
+              user:
+                $ref: '#/definitions/main.User'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      summary: Google OAuth Login
+      tags:
+      - Authentication
+  /customer/checkout:
+    post:
+      consumes:
+      - application/json
+      description: Create new transaction and checkout services
+      parameters:
+      - description: Checkout Data
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            items:
+              items:
+                properties:
+                  quantity:
+                    type: integer
+                  service_id:
+                    type: integer
+                type: object
+              type: array
+            payment_method_id:
+              type: integer
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Transaction'
+        "400":
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Customer Checkout
+      tags:
+      - Customer
+  /customer/memberships:
+    get:
+      consumes:
+      - application/json
+      description: Get list of memberships owned by the logged-in user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Membership'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Get Customer Memberships
+      tags:
+      - Customer - Membership
+  /customer/memberships/apply:
+    post:
+      consumes:
+      - application/json
+      description: Create new membership and a pending transaction
+      parameters:
+      - description: Membership Application
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            payment_method_id:
+              type: integer
+            vehicle_id:
+              type: integer
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Membership'
+        "400":
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Apply for Membership
+      tags:
+      - Customer - Membership
+  /customer/memberships/renew:
+    post:
+      consumes:
+      - application/json
+      description: Renew existing membership with payment
+      parameters:
+      - description: Renew Membership
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            membership_id:
+              type: integer
+            payment_method_id:
+              type: integer
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              message:
+                type: string
+              transaction:
+                $ref: '#/definitions/main.Transaction'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Renew Membership
+      tags:
+      - Customer - Membership
+  /customer/points:
+    get:
+      consumes:
+      - application/json
+      description: Get current loyalty points of logged-in customer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              points:
+                type: integer
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get User Points
+      tags:
+      - Customer
+  /customer/profile:
+    get:
+      consumes:
+      - application/json
+      description: Get current user profile information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.User'
+        "401":
+          description: Unauthorized
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get User Profile
+      tags:
+      - Customer
+    put:
+      consumes:
+      - application/json
+      description: Update customer profile (name, phone)
+      parameters:
+      - description: Profile Data
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            name:
+              type: string
+            phone:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              message:
+                type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update Profile
+      tags:
+      - Customer
+  /customer/qr:
+    get:
+      consumes:
+      - application/json
+      description: Generate QR code containing customer identity
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              data:
+                type: object
+              qr_code:
+                type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Generate Customer QR
+      tags:
+      - Customer
+  /customer/transactions:
+    get:
+      consumes:
+      - application/json
+      description: Get all transactions by the logged-in customer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Transaction'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Get User Transactions
+      tags:
+      - Customer
+  /services:
+    get:
+      consumes:
+      - application/json
+      description: Get list of all active services (carwash & bikewash)
+      parameters:
+      - description: Service category
+        enum:
+        - carwash
+        - bikewash
+        in: query
+        name: category
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Service'
+            type: array
+      summary: Get All Services
+      tags:
+      - Services
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
